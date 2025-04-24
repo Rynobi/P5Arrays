@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Just Shapes, No Beats</title>
+    <style> /* Positioning learning from https://www.w3schools.com/css/css_positioning.asp */
+        body {
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .info-text {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: white;
+            font-size: 14px;
+        }
+        .button-container { /* CSS Buttons https://www.w3schools.com/css/css3_buttons.asp */
+            position: absolute;
+            bottom: 60px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease; /* Transitions https://www.w3schools.com/css/css3_transitions.asp */
+            pointer-events: none;
+        }
+        .button-container.visible {
+            opacity: 1;
+            pointer-events: auto; /* Can only click buttons when pointer is there */
+        }
+        .button {
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .start {
+            background-color: #002a57;
+        }
+        .fullscreen {
+            background-color: #002a57;
+        }
+        .toggle-text {
+            background-color: #002a57;
+        }
+        .color-taggle {
+            background-color: #002a57;
+        }
+        .toggle-bounce {
+            background-color: #002a57;
+        }
+        .toggle-shape {
+            background-color: #002a57;
+        }
+
+        
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.5/lib/p5.min.js"></script>
+</head>
+<body>
+
+    <div class="info-text" id="infoText">Hover mouse here for some fun</div>
+    <div class="button-container" id="buttonContainer"> <!-- Dividing the thing, the group buttons thing from the hint so that its always visible -->
+        <button class="button start" id="toggleButton" onclick="toggleParticles()">Start</button>
+
+        <button class="button fullscreen" onclick="toggleFullscreen()">Fullscreen</button>
+
+        <button class="button toggle-text" onclick="toggleInfoText()">Hide Hint</button>
+
+        <button class="button color-taggle" id="colorToggleButton" onclick="toggleColorMode()">Color On</button>
+
+        <button class="button toggle-bounce" id="bounceToggleButton" onclick="toggleBounce()">Bounce On</button>
+
+        <button class="button toggle-shape" id="shapeToggleButton" onclick="toggleShape()">Shape On</button>
+
+    <input type="range" id="velocitySlider" min="0" max="20" value="1" step="0.1" onchange="updateVelocity()" />
+    <label for="velocitySlider" style="color: white;">Particle Speed: <span id="velocityValue">1</span></label>
+
+    <input type="range" id="sizeSlider" min="1" max="100" value="2" step="0.1" onchange="updateSize()" />
+    <label for="sizeSlider" style="color: white;">Size: <span id="sizeValue">2</span></label>
+
+    <input type="range" id="intervalSlider" min="1" max="200" value="100" step="1" onchange="updateInterval()" />
+    <label for="intervalSlider" style="color: white;">Spawn Cooldown: <span id="intervalValue">100</span></label>
+
+    <input type="range" id="lifespanSlider" min="1" max="1000" value="250" step="1" onchange="updateLifespan()" />
+    <label for="lifespanSlider" style="color: white;">Lifespan: <span id="lifespanValue">250</span></label>
+
+</div>
+
+    <script>
+        // The container show up when mouse at bottom right
+        document.addEventListener('mousemove', function(event) {
+            const container = document.getElementById('buttonContainer');
+            if (event.clientY > window.innerHeight - 600 && event.clientX > window.innerWidth - 300) {
+                container.classList.add('visible'); // Hi
+            } else {
+                container.classList.remove('visible'); // Bye
+            }
+        });
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen()
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // Hide Text
+        function toggleInfoText() {
+            const infoText = document.getElementById('infoText');
+            if (infoText.style.display === "none") {
+                infoText.style.display = "block";
+            } else {
+                infoText.style.display = "none";
+            }
+        }
+    </script>
+    <script src="arrays.js"></script>
+</body>
+</html>
