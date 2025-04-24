@@ -78,11 +78,11 @@
 
         <button class="button toggle-shape" id="shapeToggleButton" onclick="toggleShape()">Shape On</button>
 
-    <input type="range" id="velocitySlider" min="0" max="20" value="1" step="0.1" onchange="updateVelocity()" />
-    <label for="velocitySlider" style="color: white;">Particle Speed: <span id="velocityValue">1</span></label>
-
+    <input type="range" id="velocitySlider" min="0" max="20" value="1" step="0.1" onchange="updateVelocity()" /> 
+    <label for="velocitySlider" style="color: white;">Particle Speed: <span id="velocityValue">1</span></label>  <!-- This is like concat() but like, not really fitting the requirement -->
+ 
     <input type="range" id="sizeSlider" min="1" max="100" value="2" step="0.1" onchange="updateSize()" />
-    <label for="sizeSlider" style="color: white;">Size: <span id="sizeValue">2</span></label>
+    <label for="sizeSlider" style="color: white;">Size: <span id="sizeValue">2</span></label> 
 
     <input type="range" id="intervalSlider" min="1" max="200" value="100" step="1" onchange="updateInterval()" />
     <label for="intervalSlider" style="color: white;">Spawn Cooldown: <span id="intervalValue">100</span></label>

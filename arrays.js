@@ -7,6 +7,7 @@
 // Lifespan Change
 // Diff Shapes
 
+// Default settings
 let particles = [];
 let isRunning = false;
 let isColorful = false;
@@ -15,7 +16,26 @@ let particleSize = 2;
 let isBouncing = false;
 let isShapeDifferent = false;
 let particleInterval;
-let particleLifespan = 250
+let particleLifespan = 250;
+
+// RGB
+const colors = [
+    [255, 0, 0],    
+    [0, 255, 0],    
+    [0, 0, 255],    
+    [255, 255, 0],  
+    [255, 0, 255],  
+    [0, 255, 255],  
+    [255, 165, 0],  
+    [128, 0, 128]   
+];
+
+const shapes = ['circle', 'square', 'triangle', 'point']; 
+
+
+const combinedArray = colors.concat(shapes); 
+console.log(combinedArray)
+
 
 const elements = [
     document.getElementById("toggleButton"),
@@ -40,7 +60,7 @@ function draw() {
             particles[i].update();
             particles[i].show();
             if (particles[i].isFinished()) {
-                particles.splice(i, 1); // https://www.w3schools.com/jsref/jsref_splice.asp Splicing
+                particles.splice(i, 1); // Remove dead particles using splice https://www.w3schools.com/jsref/jsref_splice.asp
             }
         }
     }
@@ -51,16 +71,24 @@ class Particle {
         this.position = createVector(x, y);
         this.velocity = createVector(random(-particleVelocity, particleVelocity), random(-particleVelocity, particleVelocity));
         this.lifespan = particleLifespan;
-        this.color = colorful ? color(random(255), random(255), random(255)) : color(255);
+
+        // color
+        if (colorful) {
+            const randomColor = random(colors);
+            this.color = color(randomColor[0], randomColor[1], randomColor[2]); // RGB
+        } else {
+            this.color = color(255); // Default
+        }
+
         this.shape = shape;
-        this.angle = random(TWO_PI);
-        this.rotationSpeed = 0.01; // Speed of rotation (Too lazy to make a slider for it sorry)
+        this.angle = random(TWO_PI); // "TWO_PI" is just 360 https://p5js.org/reference/p5/TWO_PI/
+        this.rotationSpeed = 0.01; // rotation
     }
 
     update() {
         this.position.add(this.velocity);
         this.angle += this.rotationSpeed;
-        if (isBouncing) { //Learned in class during that dvd screen thingy
+        if (isBouncing) {
             if (this.position.x > width || this.position.x < 0) {
                 this.velocity.x *= -1; 
             }
@@ -96,7 +124,7 @@ class Particle {
             point(0, 0);
         }
 
-        pop(); //pop https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop
+        pop(); // Restore
     }
 }
 
@@ -112,7 +140,7 @@ function toggleShape() {
     const button = elements[7];
 
     if (isShapeDifferent) {
-        button.textContent = "Shape Off"; //Change Text
+        button.textContent = "Shape Off"; // Change Text
     } else {
         button.textContent = "Shape On";
     }
@@ -131,8 +159,8 @@ function toggleBounce() {
 
 function createParticle() {
     if (isRunning) {
-        let shape = isShapeDifferent ? random(['circle', 'square', 'triangle']) : 'point'; //Random shape picker
-        particles.push(new Particle(random(width), random(height), isColorful, shape));
+        let shape = isShapeDifferent ? random(shapes) : 'point'; // Random shape picker
+        particles.push(new Particle(random(width), random(height), isColorful, shape)); // adding new particles into the array https://www.w3schools.com/jsref/jsref_push.asp
     }
 }
 
@@ -152,22 +180,22 @@ function updateInterval() {
     startParticleGeneration();
 }
 
-//call the functio
+// Call
 updateInterval();
 
-// Function to toggle particle generation
+// Toggle particle generation
 function toggleParticles() {
     isRunning = !isRunning; // Toggle running state
     const button = document.getElementById('toggleButton');
 
     if (isRunning) {
         button.textContent = "Stop"; 
-        button.style.backgroundColor = "darkgray"; // Color change transition (Im sorry im too lazy to change the other buttons)
+        button.style.backgroundColor = "darkgray"; // Color change transition
         startParticleGeneration(); 
     } else {
         button.textContent = "Start"; 
-        button.style.backgroundColor = ""; // Setting it blank sets it back to default
-        clearInterval(particleInterval); // Stop generating balls by making spawnrate 0
+        button.style.backgroundColor = ""; // Reset to default
+        clearInterval(particleInterval); // Instantly clears all particles upon stop
     }
 }
 
@@ -182,13 +210,11 @@ function toggleColorMode() {
     }
 }
 
-// Sped
 function updateVelocity() {
     particleVelocity = parseFloat(elements[1].value);
     elements[3].textContent = particleVelocity; 
 }
 
-// Size
 function updateSize() {
     particleSize = parseFloat(elements[2].value);
     elements[4].textContent = particleSize; 
@@ -198,4 +224,3 @@ function updateSize() {
 //function clearParticles() {
 //    particles = [];
 //}
-
